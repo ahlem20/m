@@ -16,7 +16,7 @@ const Sidebar = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get("/api/users/appointments/");
+        const response = await axios.get("https://morning-glory-backend.onrender.com/api/users/appointments/");
         setAppointments(response.data.appointments);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch appointments.");
@@ -77,7 +77,7 @@ const Sidebar = () => {
 
         const combinedDateTime = `${deadline}T${time}`;
         sendRequest(
-            "/api/users/purchase/",
+            "https://morning-glory-backend.onrender.com/api/users/purchase/",
             "POST",
             {
                 sickId: authUser?._id,
@@ -94,7 +94,7 @@ const Sidebar = () => {
         setError("");
 
         try {
-            const response = await fetch("/api/users/appointments/", {
+            const response = await fetch("https://morning-glory-backend.onrender.com/api/users/appointments/", {
                 method: "GET",
                 headers: { "Content-Type": "application/json" },
             });
