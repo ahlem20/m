@@ -9,7 +9,7 @@ const AppointmentsTable = () => {
   useEffect(() => {
     const fetchAppointments = async () => {
       try {
-        const response = await axios.get("/api/users/appointments/");
+        const response = await axios.get("https://morning-glory-backend.onrender.com/api/users/appointments/");
         setAppointments(response.data.appointments);
       } catch (err) {
         setError(err.response?.data?.message || "Failed to fetch appointments.");
