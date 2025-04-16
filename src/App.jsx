@@ -14,23 +14,17 @@ function App() {
   return (
     <div className="p-4 h-screen flex flex-col items-center justify-center">
       <Routes>
-        {/* Protected Routes */}
-        <Route
-          path="/"
-          element={authUser ? <Home /> : <Navigate to="/login" />}
-        />
+        {/* Redirect root to mainpage */}
+        <Route path="/" element={<Navigate to="/mainpage" />} />
+
+        {/* Protected Route (optional) */}
+        <Route path="/home" element={authUser ? <Home /> : <Navigate to="/login" />} />
 
         {/* Public Routes */}
         <Route path="/mainpage" element={<Mainpage />} />
-         <Route path="/fr" element={<Fr />} />
-        <Route
-          path="/login"
-          element={authUser ? <Navigate to="/" /> : <Login />}
-        />
-        <Route
-          path="/signup"
-          element={authUser ? <Navigate to="/" /> : <SignUp />}
-        />
+        <Route path="/fr" element={<Fr />} />
+        <Route path="/login" element={authUser ? <Navigate to="/home" /> : <Login />} />
+        <Route path="/signup" element={authUser ? <Navigate to="/home" /> : <SignUp />} />
       </Routes>
 
       {/* Toast Notifications */}
