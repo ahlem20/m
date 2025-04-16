@@ -93,7 +93,7 @@ function App() {
   <div className="flex items-center space-x-4">
     {authUser ? (
       <div className="flex items-center space-x-4">
-        <Link to="/">
+        <Link to="/home">
           <button className="bg-white px-4 py-2 rounded-lg hover:bg-bluey transition">
             <SiImessage size={24} />
           </button>
