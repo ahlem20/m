@@ -9,7 +9,11 @@ const useGetConversations = () => {
 		const getConversations = async () => {
 			setLoading(true);
 			try {
-				const res = await fetch("https://morning-glory-backend.onrender.com/api/users");
+				const res = await fetch("https://morning-glory-backend.onrender.com/api/users", {
+	headers: {
+		Authorization: `Bearer ${token}`,
+	},
+});
 				const data = await res.json();
 				if (data.error) {
 					throw new Error(data.error);
