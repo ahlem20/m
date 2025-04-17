@@ -1,42 +1,28 @@
+const express = require("express");
+const http = require("http");
+const { Server } = require("socket.io");
+const cors = require("cors");
 
-import { createContext, useState, useEffect, useContext } from "react";
-import { useAuthContext } from "./AuthContext";
-import io from "socket.io-client";
+const app = express();
+app.use(cors({
+  origin: "https://morning-g.onrender.com", // your frontend domain
+  credentials: true
+}));
 
-const SocketContext = createContext();
+const server = http.createServer(app);
 
-export const useSocketContext = () => {
-	return useContext(SocketContext);
-};
+const io = new Server(server, {
+  cors: {
+    origin: "https://morning-g.onrender.com", // your frontend domain
+    methods: ["GET", "POST"],
+    credentials: true
+  }
+});
 
-export const SocketContextProvider = ({ children }) => {
-	const [socket, setSocket] = useState(null);
-	const [onlineUsers, setOnlineUsers] = useState([]);
-	const { authUser } = useAuthContext();
+io.on("connection", (socket) => {
+  console.log("New client connected:", socket.id);
+});
 
-	useEffect(() => {
-		if (authUser) {
-			const socket = io("https://chat-app-yt.onrender.com", {
-				query: {
-					userId: authUser._id,
-				},
-			});
-
-			setSocket(socket);
-
-			// socket.on() is used to listen to the events. can be used both on client and server side
-			socket.on("getOnlineUsers", (users) => {
-				setOnlineUsers(users);
-			});
-
-			return () => socket.close();
-		} else {
-			if (socket) {
-				socket.close();
-				setSocket(null);
-			}
-		}
-	}, [authUser]);
-
-	return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
-};
+server.listen(3000, () => {
+  console.log("Server running on port 3000");
+});
