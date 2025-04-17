@@ -16,11 +16,16 @@ export const SocketContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (authUser) {
-			const socket = io("https://chat-app-yt.onrender.com", {
-				query: {
-					userId: authUser._id,
-				},
-			});
+			import { io } from "socket.io-client";
+
+const socket = io("https://chat-app-yt.onrender.com", {
+  query: {
+    userId: user._id,
+  },
+  transports: ["websocket", "polling"],
+  withCredentials: true,
+});
+
 
 			setSocket(socket);
 
