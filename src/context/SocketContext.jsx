@@ -16,7 +16,9 @@ export const SocketContextProvider = ({ children }) => {
 	useEffect(() => {
 		if (authUser) {
 			const socket = io('https://morning-glory-backend.onrender.com', {
-  query: { userId },
+ query: {
+					userId: authUser._id,
+				},
   transports: ['websocket'],
   withCredentials: true
 });
