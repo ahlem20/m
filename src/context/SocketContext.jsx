@@ -15,11 +15,12 @@ export const SocketContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (authUser) {
-			const socket = io("https://morning-glory-backend.onrender.com", {
-				query: {
-					userId: authUser._id,
-				},
-			});
+			const socket = io('https://morning-glory-backend.onrender.com', {
+  query: { userId },
+  transports: ['websocket'],
+  withCredentials: true
+});
+
 
 			setSocket(socket);
 
