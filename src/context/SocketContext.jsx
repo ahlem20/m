@@ -15,25 +15,29 @@ export const SocketContextProvider = ({ children }) => {
 
 	useEffect(() => {
 		if (authUser) {
-			const socket = io('https://morning-glory-backend.onrender.com', {
-	auth: {
-		token: localStorage.getItem("token"),
-		userId: authUser._id
-	},
-	transports: ['websocket'],
-	withCredentials: true
+			const token = localStorage.getItem("token");
 
-});
+			if (!token) {
+				console.warn("Token not found in localStorage");
+				return;
+			}
 
+			const newSocket = io('https://morning-glory-backend.onrender.com', {
+				auth: {
+					token,
+					userId: authUser._id
+				},
+				transports: ['websocket'],
+				withCredentials: true
+			});
 
-			setSocket(socket);
+			setSocket(newSocket);
 
-			// socket.on() is used to listen to the events. can be used both on client and server side
-			socket.on("getOnlineUsers", (users) => {
+			newSocket.on("getOnlineUsers", (users) => {
 				setOnlineUsers(users);
 			});
 
-			return () => socket.close();
+			return () => newSocket.close();
 		} else {
 			if (socket) {
 				socket.close();
@@ -42,5 +46,9 @@ export const SocketContextProvider = ({ children }) => {
 		}
 	}, [authUser]);
 
-	return <SocketContext.Provider value={{ socket, onlineUsers }}>{children}</SocketContext.Provider>;
+	return (
+		<SocketContext.Provider value={{ socket, onlineUsers }}>
+			{children}
+		</SocketContext.Provider>
+	);
 };
