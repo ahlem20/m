@@ -1,12 +1,11 @@
+// SocketContext.js
 import { createContext, useState, useEffect, useContext } from "react";
 import { useAuthContext } from "./AuthContext";
 import io from "socket.io-client";
 
 const SocketContext = createContext();
 
-export const useSocketContext = () => {
-	return useContext(SocketContext);
-};
+export const useSocketContext = () => useContext(SocketContext);
 
 export const SocketContextProvider = ({ children }) => {
 	const [socket, setSocket] = useState(null);
@@ -16,19 +15,18 @@ export const SocketContextProvider = ({ children }) => {
 	useEffect(() => {
 		if (authUser) {
 			const token = localStorage.getItem("token");
-
 			if (!token) {
-				console.warn("Token not found in localStorage");
+				console.warn("No token found in localStorage");
 				return;
 			}
 
-			const newSocket = io('https://morning-glory-backend.onrender.com', {
+			const newSocket = io("https://morning-glory-backend.onrender.com", {
 				auth: {
 					token,
-					userId: authUser._id
+					userId: authUser._id,
 				},
-				transports: ['websocket'],
-				withCredentials: true
+				transports: ["websocket"],
+				withCredentials: true,
 			});
 
 			setSocket(newSocket);
@@ -38,11 +36,9 @@ export const SocketContextProvider = ({ children }) => {
 			});
 
 			return () => newSocket.close();
-		} else {
-			if (socket) {
-				socket.close();
-				setSocket(null);
-			}
+		} else if (socket) {
+			socket.close();
+			setSocket(null);
 		}
 	}, [authUser]);
 
