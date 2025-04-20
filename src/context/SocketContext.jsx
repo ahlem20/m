@@ -16,11 +16,13 @@ export const SocketContextProvider = ({ children }) => {
 	useEffect(() => {
 		if (authUser) {
 			const socket = io('https://morning-glory-backend.onrender.com', {
- query: {
-					userId: authUser._id,
-				},
-  transports: ['websocket'],
-  withCredentials: true
+	auth: {
+		token: localStorage.getItem("token"),
+		userId: authUser._id
+	},
+	transports: ['websocket'],
+	withCredentials: true
+
 });
 
 
