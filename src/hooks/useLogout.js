@@ -10,7 +10,7 @@ const useLogout = () => {
 	const logout = async () => {
 		setLoading(true);
 		try {
-			const res = await fetch("https://morning-glory-backend.onrender.com/api/auth/logout", {
+			const res = await fetch("https://morning-glory-backend-605u.onrender.com/api/auth/logout", {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 			});
