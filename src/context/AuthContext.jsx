@@ -1,5 +1,5 @@
 // context/AuthContext.js
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useState, useEffect } from "react";
 
 const AuthContext = createContext();
 
@@ -7,10 +7,9 @@ export const AuthProvider = ({ children }) => {
   const [authUser, setAuthUser] = useState(null);
 
   useEffect(() => {
-    // Load user from localStorage if available
-    const user = localStorage.getItem("chat-user"); // or whatever key you're using
-    if (user) {
-      setAuthUser(JSON.parse(user));
+    const storedUser = localStorage.getItem("chat-user"); // match your storage key
+    if (storedUser) {
+      setAuthUser(JSON.parse(storedUser));
     }
   }, []);
 
