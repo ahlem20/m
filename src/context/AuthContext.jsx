@@ -1,17 +1,16 @@
+// context/AuthContext.js
 import { createContext, useContext, useEffect, useState } from "react";
 
-// إنشاء السياق
 const AuthContext = createContext();
 
-// مزود السياق
-export const AuthContextProvider = ({ children }) => {
+export const AuthProvider = ({ children }) => {
   const [authUser, setAuthUser] = useState(null);
 
-  // تحميل المستخدم من localStorage عند بداية التطبيق
   useEffect(() => {
-    const storedUser = localStorage.getItem("chat-user");
-    if (storedUser) {
-      setAuthUser(JSON.parse(storedUser));
+    // Load user from localStorage if available
+    const user = localStorage.getItem("chat-user"); // or whatever key you're using
+    if (user) {
+      setAuthUser(JSON.parse(user));
     }
   }, []);
 
@@ -22,5 +21,4 @@ export const AuthContextProvider = ({ children }) => {
   );
 };
 
-// دالة مساعدة للاستخدام في أي مكان
 export const useAuthContext = () => useContext(AuthContext);
