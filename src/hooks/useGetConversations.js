@@ -14,12 +14,15 @@ const useGetConversations = () => {
         const token = authUser?.token;
         if (!token) throw new Error("No token found");
 
-        const res = await fetch("https://morning-glory-backend-605u.onrender.com/api/users", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
+        const res = await fetch(
+          "https://morning-glory-backend-605u.onrender.com/api/users",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
 
         const data = await res.json();
         if (data.error) throw new Error(data.error);
