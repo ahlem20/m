@@ -7,9 +7,20 @@ import Mainpage from "./pages/mainpage/mainpage";
 import Fr from "./pages/mainpage/fr";
 import { Toaster } from "react-hot-toast";
 import { useAuthContext } from "./context/AuthContext";
+import { useEffect, useState } from "react";
 
 function App() {
   const { authUser } = useAuthContext();
+  const [loading, setLoading] = useState(true);
+
+  // Wait for localStorage hydration
+  useEffect(() => {
+    setLoading(false); // When context loads, set loading to false
+  }, [authUser]);
+
+  if (loading) {
+    return <div className="text-center text-xl">Loading...</div>;
+  }
 
   return (
     <div className="p-4 h-screen flex flex-col items-center justify-center">
@@ -17,7 +28,7 @@ function App() {
         {/* Redirect root to mainpage */}
         <Route path="/" element={<Navigate to="/mainpage" />} />
 
-        {/* Protected Route (optional) */}
+        {/* Protected Route */}
         <Route path="/home" element={authUser ? <Home /> : <Navigate to="/login" />} />
 
         {/* Public Routes */}
