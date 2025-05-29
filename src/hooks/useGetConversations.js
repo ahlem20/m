@@ -7,36 +7,41 @@ const useGetConversations = () => {
   const [conversations, setConversations] = useState([]);
   const { authUser } = useAuthContext();
 
-  useEffect(() => {
-    const getConversations = async () => {
-      setLoading(true);
-      try {
-        const token = authUser?.token;
-        if (!token) throw new Error("No token found");
-
-        const res = await fetch(
-          "https://morning-glory-backend-605u.onrender.com/api/users",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
-        const data = await res.json();
-        if (data.error) throw new Error(data.error);
-
-        setConversations(data);
-      } catch (error) {
-        toast.error(error.message);
-      } finally {
-        setLoading(false);
+useEffect(() => {
+  const getConversations = async () => {
+    setLoading(true);
+    try {
+      const token = authUser?.token;
+      console.log("Token:", token);
+      if (!token) {
+        throw new Error("No token found. Please login again.");
       }
-    };
 
-    getConversations();
-  }, [authUser]);
+      const res = await fetch("https://morning-glory-backend-605u.onrender.com/api/users", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (res.status === 401) {
+        throw new Error("Unauthorized. Please login again.");
+      }
+
+      const data = await res.json();
+      if (data.error) throw new Error(data.error);
+
+      setConversations(data);
+    } catch (error) {
+      toast.error(error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  getConversations();
+}, [authUser]);
+
 
   return { loading, conversations };
 };
