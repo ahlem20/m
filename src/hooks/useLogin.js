@@ -15,7 +15,9 @@ const login = async (username, password) => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),
-    });
+            credentials: "include", // ⭐ هنا نضيف هذا الخيار
+        });
+
 
     // تحقق من حالة الاستجابة قبل محاولة تحليل JSON
     if (!res.ok) {
