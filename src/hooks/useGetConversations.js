@@ -18,11 +18,11 @@ useEffect(() => {
       }
 
       const res = await fetch("https://morning-glory-backend-605u.onrender.com/api/users", {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      });
+        method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include", // ⭐ هنا نضيف هذا الخيار
+        });
+
 
       if (res.status === 401) {
         throw new Error("Unauthorized. Please login again.");
